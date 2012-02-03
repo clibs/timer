@@ -5,15 +5,17 @@
 
 int main ()
 {
-	struct timert timer;
-	
-	timer_start (&timer);
+  struct timert timer;
 
-	usleep (1e6);
-	
-	timer_stop (&timer);
-	
-	printf ("Delta: %f\n", timer_delta (&timer));
-	
-	return 0;
+  timer_start (&timer);
+  printf ("Timer started\n");
+
+  usleep (1e6);
+
+  timer_stop (&timer);
+  printf ("Timer stopped\n");
+
+  printf ("Delta: %f seconds\n", timer_delta (&timer));
+
+  return 0;
 }

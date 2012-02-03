@@ -4,25 +4,30 @@
  */
 
 #include <stdio.h>
-#include <sys/time.h>
+#include <time.h>
 #include "timer.h"
 
 
+/** Uses clock_gettime() to mark the number of seconds and nanoseconds
+ *  between the Epoch and now.
+ */
+static int get_time (struct timespec* tv)
+{
+  return clock_gettime(CLOCK_REALTIME, tv);
+}
 
 /** Returns the delta between the start and end of the timer.
  *
  *  @note If timer_start() and timer_stop() doesn't get called
  *        before this, the results are unpredictable.
  */
-
-
-/** Returns the difference between the start and the end points of 't'.
- */
 float timer_delta (struct timert* t)
 {
-	float delta = (((float)t->end.tv_sec + (float)(t->end.tv_usec/1000000)) - ((float)t->start.tv_sec + ((float)t->start.tv_usec/10000000)));
+  int sec    = (t->end.tv_sec) - (t->start.tv_sec);
 
-	return delta;
+  float nsec = (t->end.tv_nsec - t->start.tv_nsec) / 1e9;
+
+  return (sec + nsec);
 }
 
 
@@ -32,10 +37,8 @@ float timer_delta (struct timert* t)
  */
 int timer_start (struct timert* t)
 {
-	return gettimeofday (&(t->start), NULL);
+  return get_time (&(t->start));
 }
-
-
 
 /** Records the current time as a stop point.
  *
@@ -43,7 +46,7 @@ int timer_start (struct timert* t)
  */
 int timer_stop (struct timert* t)
 {
-	return gettimeofday (&(t->end), NULL);
+  return get_time (&(t->end));
 }
 
 
