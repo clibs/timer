@@ -29,19 +29,19 @@
  *
  */
 
-
 /** The timer structure */
-struct timert
+typedef struct timer_s
 {
   struct timespec start; /**< The timer start point */
   struct timespec end;   /**< The timer stop point */
-};
+} timer_s;
 
-
-float timer_delta (struct timert* t);
-int   timer_start (struct timert* t);
-int   timer_stop (struct timert* t);
-
+int  timer_start(timer_s* t);
+int  timer_stop(timer_s* t);
+long timer_delta_nseconds(timer_s* t);
+long timer_delta_useconds(timer_s* t);
+long timer_delta_mseconds(timer_s* t);
+long timer_delta_seconds(timer_s* t);
 
 #endif
 

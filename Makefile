@@ -1,6 +1,7 @@
+# timer Makefile
 #
-#	Arguments Makefile
-#
+# This builds a simple test to check this timer's precision
+# A simple 'make run' will do
 
 CFILES   = src/timer.c
 HFILES   = src/timer.h
