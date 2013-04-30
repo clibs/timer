@@ -12,17 +12,17 @@ int main ()
 
   usleep(1e6);
 
-  timer_stop(&timer);
+  timer_pause(&timer);
   printf("Timer stopped\n");
 
   printf("Delta:\n"
-		 "nanoseconds:  %ld\n"
-		 "microseconds: %ld\n"
-		 "miliseconds:  %ld\n"
-		 "seconds:      %ld\n", timer_delta_nseconds(&timer),
-		                        timer_delta_useconds(&timer),
-		                        timer_delta_mseconds(&timer),
-		                        timer_delta_seconds(&timer));
+		 "microsseconds...%ld\n"
+		 "seconds.........%ld\n"
+		 "minutes.........%ld\n"
+		 "hours...........%ld\n", timer_delta_ms(&timer),
+								timer_delta_s(&timer),
+								timer_delta_m(&timer),
+								timer_delta_h(&timer));
 
   return 0;
 }

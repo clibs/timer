@@ -1,47 +1,75 @@
 /** @file timer.h
- *  Declaration of the timer structure and functions.
+ *	Defines stuff related to the timer.
  *
- *  Start the timer by calling timer_start() and set its delay
- *  by giving it to timer_set_delay().
- *  The main use of this module is to compare the timer (through timer_delta())
- *  with the delay (returned by timer_get_delay()). Remember to call
- *  timer_stop() often!
+ *	Basically, it starts a timer and can return a delta from that
+ *	point on.
  *
- *  gettimeofday() is Unix, GNU/Linux and Mac OS X system-specific.
- *  The only portable function is time.h's clock(), but it isn't very precise.
- *  <a href="http://www.songho.ca/misc/timer/timer.html"> Here's the source </a>.
+ *	You can also pause the timer and unpause it anytime.
+ *
+ *	How-to-use:
+ *
+ *	timer_s timer;
+ *	start_timer(&timer);
+ *	...
+ *	unsigned int delta = timer_delta_us(&timer);
+ *	...
+ *	pause_timer(&timer);
+ *	delta = timer_delta_s(&timer);
+ *	unpause_timer(&timer);
+ *	...
+ *
+ *	This module uses gettimeofday().
+ *	It is Unix, GNU/Linux and Mac OS X system-specific.
+ *	The only portable function is time.h's clock(), but it isn't very precise.
+ *	See: http://www.songho.ca/misc/timer/timer.html
  */
 
 #ifndef TIMER_H_DEFINED
 #define TIMER_H_DEFINED
 
-#include <time.h>
-
-
-/* For more info, check 'man clock_gettime'
- *
- * The 'struct timespec' is defined like this:
- *
- *  struct timespec {
- *      time_t tv_sec;      <- seconds
- *      long   tv_nsec;     <- nanoseconds
- *  };
- *
- */
+#include <stdio.h>
+#include <sys/time.h>
+#include <stdbool.h>
 
 /** The timer structure */
 typedef struct timer_s
 {
-  struct timespec start; /**< The timer start point */
-  struct timespec end;   /**< The timer stop point */
+	suseconds_t start_mark; /**< The timer start point */
+	suseconds_t pause_mark; /**< In case we pause the timer */
+	bool running;
+	bool paused;
 } timer_s;
 
-int  timer_start(timer_s* t);
-int  timer_stop(timer_s* t);
-long timer_delta_nseconds(timer_s* t);
-long timer_delta_useconds(timer_s* t);
-long timer_delta_mseconds(timer_s* t);
-long timer_delta_seconds(timer_s* t);
+/** Starts the timer.
+ *	@note If called multiple times, restarts the timer.
+ */
+void timer_start(timer_s* t);
+
+/** Pauses the timer.
+ *	@note If called multiple times, it does nothing.
+ */
+void timer_pause(timer_s* t);
+
+/** Unpauses the timer.
+ *	@note If the timer's not paused or this is called multiple times,
+ *	it does nothing.
+ */
+void timer_unpause(timer_s* t);
+
+/** Returns the time difference in microseconds (1/1000000 seconds). */
+long timer_delta_us(timer_s* t);
+
+ /** Returns the time difference in mili (1/1000 seconds). */
+long timer_delta_ms(timer_s* t);
+
+/** Returns the time difference in seconds. */
+long timer_delta_s(timer_s* t);
+
+/** Returns the time difference in minutes (60 seconds). */
+long timer_delta_m(timer_s* t);
+
+/** Returns the time difference in hours (3600 seconds). */
+long timer_delta_h(timer_s* t);
 
 #endif
 
