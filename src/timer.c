@@ -13,7 +13,7 @@ static suseconds_t get_ticks()
 	return (tmp.tv_usec) + (tmp.tv_sec * MICROSSECONDS_IN_SECONDS);
 }
 
-void timer_start(timer_s* t)
+void timer_start(timer_t* t)
 {
 	t->start_mark = get_ticks();
 	t->pause_mark = 0;
@@ -21,7 +21,7 @@ void timer_start(timer_s* t)
 	t->paused	  = false;
 }
 
-void timer_pause(timer_s* t)
+void timer_pause(timer_t* t)
 {
 	if (!(t->running) || (t->paused)) return;
 
@@ -30,7 +30,7 @@ void timer_pause(timer_s* t)
 	t->paused	  = true;
 }
 
-void timer_unpause(timer_s* t)
+void timer_unpause(timer_t* t)
 {
 	if (t->running || !(t->paused)) return;
 
@@ -39,7 +39,7 @@ void timer_unpause(timer_s* t)
 	t->paused	  = false;
 }
 
-suseconds_t timer_delta_us (timer_s* t)
+suseconds_t timer_delta_us (timer_t* t)
 {
 	if (t->running)
 		return get_ticks() - (t->start_mark);
@@ -51,22 +51,22 @@ suseconds_t timer_delta_us (timer_s* t)
 	return (t->pause_mark) - (t->start_mark);
 }
 
-long timer_delta_ms(timer_s* t)
+long timer_delta_ms(timer_t* t)
 {
 	return (timer_delta_us(t) / 1000);
 }
 
-long timer_delta_s(timer_s* t)
+long timer_delta_s(timer_t* t)
 {
 	return (timer_delta_us(t) / 1000000);
 }
 
-long timer_delta_m(timer_s* t)
+long timer_delta_m(timer_t* t)
 {
 	return (timer_delta_s(t) / 60);
 }
 
-long timer_delta_h(timer_s* t)
+long timer_delta_h(timer_t* t)
 {
 	return (timer_delta_m(t) / 60);
 }

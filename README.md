@@ -1,6 +1,18 @@
 # timer.h
 
-Microsecond timer in C, using `gettimeofday()`.
+Simple timer with microsecond resolution.
+
+It uses `gettimeofday()`, so is not portable to non-Unix
+platforms.
+
+# Installation
+
+Install it with [clib](https://github.com/clibs/clib):
+
+    $ clib install clibs/timer
+
+If you want to use it manually, copy `src/timer.h` and
+`src/timer.c` to your project directory and include them on your Makefile.
 
 # Usage
 

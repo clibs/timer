@@ -1,0 +1,10 @@
+{
+	"name"        : "timer",
+	"version"     : "1.0.0",
+	"repo"        : "clibs/timer",
+	"description" : "Timer with microsecond resolution",
+	"keywords"    : ["timer", "time", "delta", "count", "second"],
+	"license"     : "MIT",
+	"src"         : ["src/timer.h", "src/timer.c"]
+}
+
