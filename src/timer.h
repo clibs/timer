@@ -51,7 +51,7 @@ void timer_unpause(timer_t* t);
  *
  * @note (1/1000000 seconds)
  */
-long timer_delta_us(timer_t* t);
+suseconds_t timer_delta_us(timer_t* t);
 
 /** Returns the time difference in miliseconds.
  *
